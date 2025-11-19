@@ -1,289 +1,313 @@
-### 2.1 Complexity Hotspots (Task 2)
+## 2.1 Complexity Hotspots (Task 2)
 
 For Task 2 we selected **Lines of Code (LoC)** and **Cyclomatic Complexity (CC)** as our complexity measures.  
-To visualize the complexity hotspots, we combined two complementary perspectives:
+To visualize the complexity hotspots, we combined two complementary perspectives
 
-1. **File-level analysis** — identify the most complex individual `.py` files.
-2. **Directory-level analysis** — understand how complexity is distributed across the structure of the repository.
-
----
-
-## File-level hotspots
-
-We first built a **LoC–CC scatterplot**, where each point represents a Python file.  
-In this visualization (`complexitylocvscc.png`) we highlighted:
-
-- **Top-10 CC** in **orange** (`hotspot_type = "top CC"`),
-- **Top-10 LoC** in **green** (`hotspot_type = "top LoC"`),
-- Files that appear in *both* top-10 lists in **dark blue** (`hotspot_type = "both"`).
-
-This allows us to immediately see:
-
-- which files are *outliers* with extremely high LoC and/or CC,
-- which files are simultaneously long and structurally complex,
-- how the two types of hotspots overlap (≈40% overlap in our case).
-
-Below is the table with the highlighted files:
-
-| short_name                    | file_path                                                             | loc  | cc   | hotspot_type |
-|------------------------------|----------------------------------------------------------------------|-----:|-----:|--------------|
-| trainer.py                   | src/transformers/trainer.py                                          | 4005 | 1255 | both         |
-| modeling_utils.py            | src/transformers/modeling_utils.py                                   | 3950 | 1238 | both         |
-| test_modeling_common.py      | tests/test_modeling_common.py                                        | 3431 |  878 | both         |
-| modeling_seamless_m4t_v2.py  | src/transformers/models/seamless_m4t_v2/modeling_seamless_m4t_v2.py | 2808 |  533 | both         |
-| tokenization_utils_base.py   | src/transformers/tokenization_utils_base.py                          | 2320 |  613 | top CC       |
-| utils.py                     | src/transformers/generation/utils.py                                 | 2481 |  612 | top CC       |
-| testing_utils.py             | src/transformers/testing_utils.py                                    | 2118 |  600 | top CC       |
-| integration_utils.py         | src/transformers/integrations/integration_utils.py                   | 1797 |  575 | top CC       |
-| modeling_tf_utils.py         | src/transformers/modeling_tf_utils.py                                | 2048 |  571 | top CC       |
-| import_utils.py              | src/transformers/utils/import_utils.py                               | 1827 |  520 | top CC       |
-| test_tokenization_common.py  | tests/test_tokenization_common.py                                    | 3541 |  506 | top LoC      |
-| test_utils.py                | tests/generation/test_utils.py                                       | 3746 |  497 | top LoC      |
-| test_trainer.py              | tests/trainer/test_trainer.py                                        | 4973 |  470 | top LoC      |
-| modeling_qwen2_5_omni.py     | src/transformers/models/qwen2_5_omni/modeling_qwen2_5_omni.py        | 2871 |  424 | top LoC      |
-| modeling_qwen3_omni_moe.py   | src/transformers/models/qwen3_omni_moe/modeling_qwen3_omni_moe.py    | 2967 |  421 | top LoC      |
-| modular_qwen2_5_omni.py      | src/transformers/models/qwen2_5_omni/modular_qwen2_5_omni.py         | 2753 |  362 | top LoC      |
-
-**Observations:**
-
-- The main cloud of points contains files with low LoC and CC, while hotspot files are clear **outliers**.
-- Several *LoC hotspots* are under `tests/`, which is expected: complex test scenarios often require long scripts (mocking, setup, edge cases).
-- *CC hotspots* mostly occur inside `src/`, including several `*_utils.py` files — a common pattern, since utility modules tend to accumulate heterogeneous logic and more branching.
-- Files that are simultaneously top-10 in both metrics are the strongest indicators of potential refactoring candidates.
-
-The scatterplot (`complexitylocvscc.png`) therefore provides a precise view of complexity at the level of individual files.
+1. File level analysis to identify the most complex individual `.py` files  
+2. Directory level analysis to understand how complexity is distributed across the structure of the repository  
 
 ---
 
-## Directory-level hotspots
+### File level hotspots
 
-We then moved to a **higher-level structural view**.  
-For every file we propagated LoC and CC upward through the directory tree and computed, for each directory node at depth 1 and 2:
+We first built a LoC versus CC scatterplot, where each point represents a Python file.  
+In this visualization, saved as `complexitylocvscc.png`, we highlighted
 
-- **Average LoC per file (`avg_loc`)**,  
-- **Average CC per file (`avg_cc`)**.
+- Top ten files by CC in orange  
+- Top ten files by LoC in green  
+- Files that appear in both lists in dark blue  
 
-The resulting visualization (`complexitytree.png`) uses two visual channels:
+This allows us to immediately see
 
-- **Node size ∝ average LoC**,  
-- **Node color ∝ average CC** (`viridis` colormap).
+- which files are outliers with extremely high LoC and or CC  
+- which files are simultaneously long and structurally complex  
+- how the two types of hotspots overlap, which in our case is around forty percent  
 
-We limited the depth to 2 to avoid visual clutter and to keep the interpretation clear.
+The highlighted files are reported in the following table
 
-The tree layout allows us to see complexity not only at the file level but *structurally*, across the architecture of the project.
+| short_name                   | file_path                                                             |   loc |   cc | hotspot_type |
+|-----------------------------|----------------------------------------------------------------------|------:|-----:|--------------|
+| trainer.py                  | src/transformers/trainer.py                                          |  4005 | 1255 | both         |
+| modeling_utils.py           | src/transformers/modeling_utils.py                                   |  3950 | 1238 | both         |
+| test_modeling_common.py     | tests/test_modeling_common.py                                        |  3431 |  878 | both         |
+| modeling_seamless_m4t_v2.py | src/transformers/models/seamless_m4t_v2/modeling_seamless_m4t_v2.py |  2808 |  533 | both         |
+| tokenization_utils_base.py  | src/transformers/tokenization_utils_base.py                          |  2320 |  613 | top CC       |
+| utils.py                    | src/transformers/generation/utils.py                                 |  2481 |  612 | top CC       |
+| testing_utils.py            | src/transformers/testing_utils.py                                    |  2118 |  600 | top CC       |
+| integration_utils.py        | src/transformers/integrations/integration_utils.py                   |  1797 |  575 | top CC       |
+| modeling_tf_utils.py        | src/transformers/modeling_tf_utils.py                                |  2048 |  571 | top CC       |
+| import_utils.py             | src/transformers/utils/import_utils.py                               |  1827 |  520 | top CC       |
+| test_tokenization_common.py | tests/test_tokenization_common.py                                    |  3541 |  506 | top LoC      |
+| test_utils.py               | tests/generation/test_utils.py                                       |  3746 |  497 | top LoC      |
+| test_trainer.py             | tests/trainer/test_trainer.py                                        |  4973 |  470 | top LoC      |
+| modeling_qwen2_5_omni.py    | src/transformers/models/qwen2_5_omni/modeling_qwen2_5_omni.py        |  2871 |  424 | top LoC      |
+| modeling_qwen3_omni_moe.py  | src/transformers/models/qwen3_omni_moe/modeling_qwen3_omni_moe.py    |  2967 |  421 | top LoC      |
+| modular_qwen2_5_omni.py     | src/transformers/models/qwen2_5_omni/modular_qwen2_5_omni.py         |  2753 |  362 | top LoC      |
 
-**What the tree reveals:**
+Main observations
 
-- At **depth 1**, CC is fairly homogeneous, while LoC varies more across directories.  
-  For example, `templates/` shows a large average LoC.
-- At **depth 2**, the complexity becomes *much* more heterogeneous:  
-  directories such as `tests/peft_integration` stand out with **high average CC** and **high average LoC**, marking them as clear structural hotspots.
-- This aggregation provides insights that the file-level scatterplot cannot:  
-  it highlights **which branches of the repository** are the most complex as a whole.
-- Potential improvements (e.g., log-scaling LoC or CC averages) could make smaller variations even clearer, but for the assignment this level of detail is sufficient.
+- The main cloud of points contains files with low LoC and low CC, while hotspot files are clear outliers  
+- Several LoC hotspots are under `tests`, which is expected, because complex scenarios and extensive mocking often require long test files  
+- CC hotspots mostly occur inside `src`, including a number of utility modules such as `*_utils.py`, which tend to accumulate heterogeneous logic and many branches  
+- Files that are top ten in both LoC and CC are strong candidates for refactoring, since they are both long and structurally complicated  
 
-Overall, the directory-level visualization is a powerful complement to the file-level scatterplot.  
-It provides a top-down view of structural complexity, helping identify entire subsystems or directory branches that may require refactoring, not only individual files.
+The scatterplot in `complexitylocvscc.png` therefore provides a precise view of complexity at the level of individual files.
 
-
-### 2.2 CC vs LoC – Part III
-
-To understand the correlation between our two selected complexity measures (LoC and CC), we first visualized all `.py` files in a scatterplot with a fitted regression line:
-
-- **Figure:** `complexitycorrelation.png` (CC vs LoC)
-
-We then computed two correlation coefficients:
-
-#### **Pearson correlation (r = 0.92)**  
-- Pearson evaluates the **linear relationship** between two variables using their raw values.  
-- It ranges in \[-1, 1\]:  
-  - **+1** → perfect positive linear correlation  
-  - **0** → no linear correlation  
-  - **–1** → perfect negative linear correlation  
-- A value of **0.92** indicates a **very strong positive** linear relationship: in this repository, files with higher LoC tend to have proportionally higher CC.  
-- Pearson is sensitive to outliers, which is relevant given the large-file outliers visible in the scatterplot.
-
-#### **Spearman correlation (ρ = 0.95)**  
-- Spearman evaluates **monotonic** relationships by ranking the values of both variables.  
-- It shares the same \[-1, 1\] scale as Pearson.  
-- A value of **0.95** suggests a **very strong positive monotonic** relationship: as LoC increases, CC almost always increases as well, regardless of linearity.  
-- This metric is more robust to outliers and confirms the strength of the relationship.
-
-To further validate this trend, we grouped all files into four LoC **quartiles** (“small”, “medium”, “large”, “xlarge”) and computed the mean CC for each group:
-
-- **Figure:** `complexityquartiles.png` (Mean CC by LoC quartile)
-
-The quartile analysis shows a clear progression:
-- **small** LoC → very low CC  
-- **medium** LoC → higher CC  
-- **large** LoC → significantly higher CC  
-- **xlarge** LoC → highest CC by a large margin  
-
-This monotonic increase strongly agrees with the Spearman result.
+![1](complexitylocvscc.png)
 
 ---
 
-### **Conclusion**
+### Directory level hotspots
 
-Both statistical measures and visualizations support the same conclusion:
+We then moved to a higher level structural view.  
+Starting from the file level metrics, we propagated LoC and CC upward through the directory tree and, for each directory node at depth one and two, we computed
 
-> **Files with more lines of code tend to have higher cyclomatic complexity.**
+- average LoC per file, called `avg_loc`  
+- average CC per file, called `avg_cc`  
 
-This is also intuitive: longer files typically contain more branches, conditions, and logical paths, which naturally increases the cyclomatic complexity of the code.
+The resulting visualization, saved as `complexitytree.png`, uses two visual channels
 
-This is also confirmed by the second plot. This was constructed by dividing the files according to the distribution of LoC values into respective quartiles. Each quartile was then categorised as small, medium, large, and very large. For each quartile, we calculated the average CC and plotted it in the bar chart. A similar trend to that mentioned above can be seen (see 'complexityquartiles.png').
+- node size proportional to `avg_loc`  
+- node color proportional to `avg_cc` using a continuous colormap  
+
+We limited the depth to two to avoid visual clutter and to keep the interpretation clear.
+
+![2](complexitytree.png)
 
 
-## 2.3 Defects vs Complexity — Part IV
 
-To investigate whether more complex files tend to be more defective, we first computed a defect count for each Python file in the repository.  
-A commit was labelled as a bug-fix commit if its message contained one of the following keywords (intentionally broad)
 
-fix, bug, patch, hotfix, error, issue
+This tree layout allows us to see complexity not only at file level but also structurally, across the architecture of the project.
 
-For every bug-fix commit, we extracted the list of modified ⁠ .py ⁠ files using
+What the tree reveals
+
+- At depth one, CC is fairly homogeneous, while LoC varies more between directories. For example the `templates` directory shows large average LoC  
+- At depth two, complexity becomes much more heterogeneous. For instance `tests/peft_integration` stands out with high average CC and high average LoC, marking it as a clear structural hotspot  
+- This aggregation highlights which branches of the repository are the most complex as a whole, something that the file level scatterplot cannot show directly  
+- A possible improvement would be to apply a logarithmic transformation to the average metrics, to make smaller differences more visible without being dominated by extreme outliers  
+
+Overall, the directory level visualization is a useful complement to the file level scatterplot.  
+It provides a top down view of structural complexity and helps identify subsystems or directory branches that may require refactoring, not only individual files.
+
+---
+
+## 2.2 CC versus LoC, Part III
+
+To understand the correlation between our two complexity measures, LoC and CC, we used two approaches
+
+1. A scatterplot with a fitted regression line, saved as `complexitycorrelation.png`  
+2. Two correlation coefficients, Pearson and Spearman
+
+
+![3](complexitycorrelation.png)
+
+### Pearson correlation
+
+Pearson correlation evaluates the strength of a linear relationship between two numeric variables using their raw values.  
+The coefficient ranges between minus one and plus one
+
+- values near plus one indicate a strong positive linear relationship  
+- values near zero indicate weak or no linear relationship  
+- values near minus one indicate a strong negative linear relationship  
+
+In our analysis the Pearson correlation between LoC and CC is approximately zero point ninety two, which indicates a very strong positive linear relationship.  
+This means that in this repository, files with higher LoC tend to have proportionally higher CC.  
+Pearson correlation is sensitive to outliers, which is relevant given the extreme files that we have identified earlier.
+
+### Spearman correlation
+
+Spearman correlation evaluates the strength of a monotonic relationship.  
+Instead of using the raw values, it first ranks LoC and CC separately and then computes the Pearson correlation on these ranks.  
+The coefficient again ranges between minus one and plus one with the same interpretation, but it is more robust to outliers.
+
+In our case the Spearman correlation between LoC and CC is approximately zero point ninety five, which indicates a very strong positive monotonic relationship.  
+As LoC increases, CC almost always increases as well, even if the exact relationship is not perfectly linear.
+
+### Quartile analysis
+
+To further validate this trend, we grouped all files into four LoC quartiles, labelled `small`, `medium`, `large` and `xlarge`.  
+For each quartile we computed the mean CC and plotted these values in a bar chart saved as `complexityquartiles.png`.
+
+![4](complexityquartiles.png)
+
+The quartile analysis shows a clear monotonic progression
+
+- small LoC files show very low CC on average  
+- medium LoC files show higher CC  
+- large LoC files show significantly higher CC  
+- xlarge LoC files show the highest CC by a large margin  
+
+This pattern is consistent with the scatterplot and with both correlation coefficients.
+
+### Conclusion
+
+Both statistical measures and visualizations support the same conclusion
+
+> Files with more lines of code tend to have higher cyclomatic complexity
+
+This result is also intuitive, because longer files naturally tend to contain more branches, conditions and independent execution paths, which directly increases cyclomatic complexity.  
+The quartile based view confirms this intuition by showing how average CC steadily increases from the smallest to the largest LoC group.
+
+---
+
+## 2.3 Defects versus Complexity, Part IV
+
+To investigate whether more complex files tend to be more defective, we first computed a defect count for each Python file in the repository.
+
+### Defect counting procedure
+
+A commit was labelled as bug fix related if its message contained at least one keyword from a set of defect related terms.  
+The set includes words such as `fix`, `fixed`, `bug`, `bugs`, `error`, `issue`, `issues`, `hotfix`, `regression` and similar.  
+This approach is intentionally broad in order to capture a wide range of defect fixing activities.
+
+For every bug fix commit we extracted the list of modified `.py` files using
 
 git show --name-only <sha>
 
-Every time a file appeared in such a commit, its defect counter was incremented.  
-The resulting defects-per-file table was then merged with the dataset containing LoC and CC, producing a single aligned dataframe.
 
-We evaluated correlation using two measures  
-=> Pearson correlation evaluates linear relationships  
-=> Spearman correlation evaluates monotonic relationships using ranked values  
+Every time a file appeared in such a commit, its defect counter was incremented by one.  
+In this way we obtained a defect frequency per file.  
+We then merged this table with the complexity dataset so that each file has LoC, CC and a defect count in a single dataframe.
 
-Two scatterplots (defectsvscc.png and defectsvsloc.png) were generated to visually inspect the relationships.
+We again evaluated the relationship with two correlation measures and two scatterplots
 
----
+- Defects versus CC, saved as `defectsvscc.png`  
+- Defects versus LoC, saved as `defectsvsloc.png`
 
-### Defects vs Cyclomatic Complexity (CC)
 
-Pearson r => 0.67  
-Spearman ρ => 0.56  
+![5](defectsvscc.png)
+![6](defectsvsloc.png)
 
-Both values show a moderate positive correlation.  
-This indicates that files with higher CC tend to appear more often in defect-related commits.  
-The scatterplot confirms a clear upward trend despite some noise.
 
----
+### Defects versus Cyclomatic Complexity
 
-### Defects vs Lines of Code (LoC)
+For defects versus CC we obtain
 
-Pearson r => 0.57  
-Spearman ρ => 0.60  
+- Pearson correlation around zero point sixty seven  
+- Spearman correlation around zero point fifty six  
 
-Again, we observe a moderate positive correlation.  
-Since LoC and CC are themselves strongly correlated, it is expected that both metrics display similar correlations with defect counts.
+Both values indicate a moderate positive correlation.  
+Files with higher CC tend to appear more often in bug fix commits, although the relationship is noisier than the almost linear LoC versus CC case.  
+The scatterplot `defectsvscc.png` shows a clear upward tendency, with many points clustered near low complexity and low defect counts and a sparser cloud for higher values.
 
----
+### Defects versus Lines of Code
+
+For defects versus LoC we obtain
+
+- Pearson correlation around zero point fifty seven  
+- Spearman correlation around zero point sixty  
+
+Again we observe a moderate positive correlation, slightly lower than for CC in Pearson and slightly higher in Spearman.  
+Since LoC and CC are themselves strongly correlated, it is not surprising that both metrics show similar levels of association with defect counts.
 
 ### Interpretation
 
-The results support the claim that files with higher complexity tend to be more defective, even if the relationship is not extremely strong.  
-The correlation is weaker than the nearly collinear relationship between LoC and CC, which is expected because file size naturally increases the likelihood of being modified and therefore appearing in bug-fix commits.
+Overall, these results support the claim that more complex files tend to be more defective, although the relationship is clearly weaker than the nearly collinear relationship that we observe between LoC and CC.
 
-A more refined analysis could normalise defect counts by file size (for example defects per 1000 LoC) to reduce the size-bias.  
-Even without such normalisation, the current evidence clearly indicates a positive association between complexity and defect propensity within this repository.
+There is also an important confounding factor. Larger files are more likely to be modified and therefore have more opportunities to appear in bug fix commits.  
+This means that some of the correlation between defects and LoC, and consequently between defects and CC, is likely driven by file size.  
+A more refined analysis could normalise defect counts by LoC, for example defects per thousand lines of code, in order to reduce this size bias.
 
-
-
-### 2.4 Use of Generative AI (Task 2)
-
-For Task 2 (Complexity Analysis), we used a Generative AI assistant strictly as a tutor, not as an automated code generator. All final code, analysis decisions, and interpretations were written and validated by us. Below we describe how AI was used and provide examples of the prompts.
+Despite these limitations, within this repository the evidence points to a positive association between complexity and defect proneness.  
+In other words, more complex files tend to be touched more often in defect related commits.
 
 ---
 
-## Environment and setup
+## 2.4 Use of Generative AI (Task 2)
 
-We used AI to clarify how to:
-- create and activate a Python 3.12 virtual environment,
-- generate a `requirements.txt` file,
-- check installed package versions,
-- update the local repository to the required `transformers` release tag.
+For Task 2, Complexity Analysis, we used a Generative AI assistant strictly as a tutor and helper.  
+All final code, plots, interpretations and design decisions were written and validated by us.
 
-**Example prompts:**
-- “How do I create and activate a Python 3.12 virtual environment and export a requirements file?”
-- “How can I checkout a specific release tag in a local clone of Hugging Face Transformers?”
+In addition, we used AI to translate some of our initial notes and interpretations written in Italian into English for inclusion in this report, while keeping the technical content and conclusions unchanged.
 
----
+Below we summarise how AI was used.
 
-## Understanding APIs and complexity metrics (LoC, CC)
+### Environment and setup
 
-We asked AI for explanations of:
-- how the `lizard` library exposes file-level metrics,
-- what `analysis.nloc` represents,
-- how to sum cyclomatic complexity across functions.
+We used AI to clarify how to
 
-The implementation of the metric extraction function was written by us.
+- create and activate a Python three point twelve virtual environment  
+- generate a `requirements.txt` file from the installed packages  
+- check installed package versions  
+- update the local clone of the `transformers` repository to the required release tag  
 
-**Example prompts:**
-- “How do I compute per-file LoC and Cyclomatic Complexity using `lizard.analyze_file`?”
-- “How do I access the list of functions and their CC values?”
+Example prompts
 
----
+- How do I create and activate a Python three point twelve virtual environment and export a requirements file  
+- How can I checkout a specific release tag in a local clone of Hugging Face Transformers  
 
-## Improving the visualization of complexity hotspots
+### Understanding APIs and complexity metrics
 
-AI was used to help improve the presentation of the results.  
-Initially we only had a raw CC–LoC scatter plot; we then requested suggestions on:
+We asked AI for explanations of
 
-- how to extract the top-10 files by CC and by LoC,
-- how to combine the lists and highlight overlaps,
-- how to display a summary table (`hotspots_table`) with annotated labels.
+- how the `lizard` library exposes file level metrics  
+- what `analysis.nloc` represents  
+- how to iterate over the function list and sum their cyclomatic complexity values  
 
-The code structure and final visualization were produced by us.
+The implementation of the metric extraction function, including the structure of `analyze_file_complexity` and the integration with pandas, was developed by us.
 
-**Example prompts:**
-- “How can I annotate the top-10 most complex files in a scatter plot?”
-- “How can I print a table with top CC and top LoC files side by side?”
+Example prompts
 
----
+- How do I compute per file LoC and cyclomatic complexity using `lizard.analyze_file`  
+- How do I access the list of functions and their CC values inside the analysis object  
 
-## Statistical interpretation (Pearson and Spearman)
+### Improving the visualization of complexity hotspots
 
-We used AI as a tutor to understand the theory behind:
+AI was used to improve the clarity of our visualisations.  
+Initially we only had a raw scatterplot of CC versus LoC.  
+We then asked for suggestions on how to
 
-- difference between Pearson and Spearman correlations,
-- how Spearman can be computed using ranked variables,
-- how to visualize complexity–defect trends clearly.
+- extract the top ten files by CC and by LoC  
+- combine the two lists and mark overlaps  
+- display a summary table with these hotspots and annotate them in the scatterplot  
 
-**Example prompts:**
-- “What is the conceptual difference between Pearson and Spearman correlation?”
-- “Is it correct to compute Spearman by ranking values and applying Pearson?”
-- “How can I visualize correlations between CC, LoC, and defects?”
+The structure of the final code and the design choices for colours and labels were decided and implemented by us.
 
-All statistical computations, regression plots, and interpretations were implemented by us, with AI providing conceptual clarification or visualization suggestions.
+Example prompts
 
----
+- How can I annotate the top ten most complex files in a scatter plot  
+- How can I print a table with top CC and top LoC files side by side in a pandas dataframe  
 
-## Tree-based aggregation and directory-level visualization
+### Statistical interpretation, Pearson and Spearman
 
-The hierarchical directory-tree visualization was conceptually designed entirely by us.  
-This was the most technically difficult part of Task 2, since it required:
+We used AI as a tutor to review the mathematical interpretation of the correlation coefficients and to choose appropriate visualisations.  
+In particular we asked about
 
-- aggregating file-level metrics upward into directory nodes (depth 1, 2, 3),
-- computing average and total values across levels,
-- representing two metrics simultaneously (size = avg LoC, color = avg CC),
-- positioning, scaling, and centering nodes across depth levels.
+- the conceptual difference between Pearson and Spearman correlations  
+- how to compute Spearman by ranking values and then applying Pearson  
+- how to present correlations between CC, LoC and defect counts in a clear way  
 
-AI was used only for **technical guidance** on how to implement the aggregation and plotting mechanics, not for designing the idea or the visualization structure itself. Concretely, AI helped with:
+All computations of correlations, the construction of the regression plots and the quartile based analysis were implemented in our notebook, with AI providing only conceptual support.
 
-- clarifying how to propagate file metrics up the directory tree,
-- understanding how to compute averages and totals per depth level,
-- centering nodes vertically within each depth,
-- scaling marker sizes and colors appropriately,
-- adjusting the legend placement and size,
-- implementing alphabetical sorting within each level for readability.
+Example prompts
 
-All conceptual ideas — the tree layout, metric propagation logic, depth-based recursion, and the dual encoding of complexity — were entirely developed by us.
+- What is the difference between Pearson and Spearman correlation and when should each be used  
+- Is it correct to compute Spearman by ranking the values and applying Pearson on the ranks  
+- How can I visualise correlations between CC, LoC and defects in a single figure  
 
-**Example prompts:**
-- “How can I aggregate metrics per directory level starting from file paths?”
-- “How can I display two variables (average LoC and average CC) in a single hierarchical plot?”
-- “How do I center node positions in matplotlib?”
-- “How can I enlarge and reposition a legend?”
-- “How do I alphabetically sort nodes at each depth for a cleaner visualization?”
+### Tree based aggregation and directory level visualization
 
-All design choices and the final implementation were written and validated independently.
+The hierarchical directory tree visualization was conceptually designed by us.  
+This was the most technically demanding part of Task 2, because it required
 
----
+- aggregating file level metrics upward into directory nodes at depths one and two  
+- computing average and total metrics per node  
+- representing two metrics simultaneously, using node size for average LoC and colour for average CC  
+- laying out and centring nodes along depth levels, and sorting them alphabetically for readability  
+
+AI was used only for technical hints on how to implement this idea.  
+For example, we requested help on
+
+- how to propagate metrics from file paths to directory prefixes  
+- how to centre nodes vertically within each depth in matplotlib  
+- how to scale marker sizes and configure a custom legend that explains the mapping from size to LoC  
+- how to enlarge and reposition the legend  
+- how to ensure that nodes at the same depth are sorted alphabetically  
+
+Example prompts
+
+- How can I aggregate metrics per directory level starting from file paths  
+- How can I display two variables, average LoC and average CC, in a single hierarchical plot  
+- How do I centre node positions and create a custom legend in matplotlib  
+
+All high level design decisions, including the choice of depth limit, the use of average values and the final form of the plot in `complexitytree.png`, were completely defined and validated by us.
