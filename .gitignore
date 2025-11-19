@@ -1,0 +1,5 @@
+transformers/
+__pycache__/
+.DS_Store
+venv/
+.venv_fss_se/
