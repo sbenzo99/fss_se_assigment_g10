@@ -126,13 +126,13 @@ To understand the correlation between our two complexity measures, LoC and CC, w
 ### Pearson correlation
 
 Pearson correlation evaluates the strength of a linear relationship between two numeric variables using their raw values.  
-The coefficient ranges between minus one and plus one
+The coefficient ranges between -1 and +1
 
-- values near plus one indicate a strong positive linear relationship  
-- values near zero indicate weak or no linear relationship  
-- values near minus one indicate a strong negative linear relationship  
+- values near +1 indicate a strong positive linear relationship  
+- values near 0 indicate weak or no linear relationship  
+- values near -1 indicate a strong negative linear relationship  
 
-In our analysis the Pearson correlation between LoC and CC is approximately zero point ninety two, which indicates a very strong positive linear relationship.  
+In our analysis the Pearson correlation between LoC and CC is approximately 0.92, which indicates a very strong positive linear relationship.  
 This means that in this repository, files with higher LoC tend to have proportionally higher CC.  
 Pearson correlation is sensitive to outliers, which is relevant given the extreme files that we have identified earlier.
 
@@ -142,7 +142,7 @@ Spearman correlation evaluates the strength of a monotonic relationship.
 Instead of using the raw values, it first ranks LoC and CC separately and then computes the Pearson correlation on these ranks.  
 The coefficient again ranges between minus one and plus one with the same interpretation, but it is more robust to outliers.
 
-In our case the Spearman correlation between LoC and CC is approximately zero point ninety five, which indicates a very strong positive monotonic relationship.  
+In our case the Spearman correlation between LoC and CC is approximately 0.95, which indicates a very strong positive monotonic relationship.  
 As LoC increases, CC almost always increases as well, even if the exact relationship is not perfectly linear.
 
 ### Quartile analysis
@@ -205,8 +205,8 @@ We again evaluated the relationship with two correlation measures and two scatte
 
 For defects versus CC we obtain
 
-- Pearson correlation around zero point sixty seven  
-- Spearman correlation around zero point fifty six  
+- Pearson correlation around 0.67  
+- Spearman correlation around 0.56 
 
 Both values indicate a moderate positive correlation.  
 Files with higher CC tend to appear more often in bug fix commits, although the relationship is noisier than the almost linear LoC versus CC case.  
@@ -216,8 +216,8 @@ The scatterplot `defectsvscc.png` shows a clear upward tendency, with many point
 
 For defects versus LoC we obtain
 
-- Pearson correlation around zero point fifty seven  
-- Spearman correlation around zero point sixty  
+- Pearson correlation around 0.57  
+- Spearman correlation around 0.60 
 
 Again we observe a moderate positive correlation, slightly lower than for CC in Pearson and slightly higher in Spearman.  
 Since LoC and CC are themselves strongly correlated, it is not surprising that both metrics show similar levels of association with defect counts.
@@ -323,7 +323,7 @@ For example, we requested help on
 - how to propagate metrics from file paths to directory prefixes  
 - how to centre nodes vertically within each depth in matplotlib  
 - how to scale marker sizes and configure a custom legend that explains the mapping from size to LoC  
-- how to enlarge and reposition the legend  
+- how to enlarge and reposition the legend s 
 - how to ensure that nodes at the same depth are sorted alphabetically  
 
 Example prompts
