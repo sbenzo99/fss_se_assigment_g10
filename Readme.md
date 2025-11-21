@@ -1,3 +1,25 @@
+##1.1 Defect Analysis(Task 1)
+
+We use Git commands to extract the commits messages since 2023-01-01 in the HuggingFace transformers repository. We redirect the output in a commits.txt file for visual inspection and for data analysis later on.
+
+We then sort (desc) all the unique words in the file by frquency and then remove the less intresting ones (connectors, articles..). We then create a list of target words related to defect fixes and we inspect the frequency of those. We do the same with refactor-related fixes and optimization-related fixes, to have an overview of the ripartion. The results show that the vast majority of commits are bugs-related, follows refactoring and lastly optimization. 
+
+We now move on to plotting the total number of defects per month, to do so we first output the git commits in a commits_with_dates.txt and we use a separator to parse the text easily during analysis. We look for bugs keywords in the dataframe, group by the month, take the size of the grouped df as the total count and plot.
+
+The plot shows a sharp drop of bug-related commits in October 2025. Notice that before dropping sharply, it reaches the heighest number of defects per month. We can clearly see that between February and September, there is high concentration of fixes, almost 60% more of the amount of fixes up to that point in time. On October 3rd, the version v4.57.0 was released, and this could explain both the high amount of fixes before that, and the consequent sharp drop.
+
+We then found the two files with the most defects: modeling_utils.py and trainer.py.
+For modeling_utils.py the number of defects aligns with the general trend (most defects from February 2025 to September 2025) but the peak is reached in February. Looking through the commits, we noticed the addition of a new model, Qwen2.5 vl on January 23rd. Our hypothesis is that the introduction of this new model has increased complexity and compatibility issues, specifically with the modeling_utils.py, which is a parent class to all models. A similar event could have sparked the rise in bugs in the trainer.py file, as on April 23rd, a commit "Add FocalNet" appears. FocalNet is another visual model, that likely required multiple adjustments in the training loop.
+
+
+Lastly, we explain the limitiations of this method: 
+
+1. The research is keyword based. Developers have different styles and vocabulary when it comes to commit messages, so the results depend on keyword matching and not on actual defect detection.
+2. It's hard to differentiate the impact of the different bugs. Many fixes concern minor issues, like typos or formatting. This appear as "fixes" but are less relevant for the software evolution.
+3. This type of search can only trace when the bug is fixed, but not when it is introduced.
+4. It's time consuming to manually inspect the repositories in order to form an hypotesis which is then also hard to test if accurate
+
+
 ## 2.1 Complexity Hotspots (Task 2)
 
 For Task 2 we selected **Lines of Code (LoC)** and **Cyclomatic Complexity (CC)** as our complexity measures.  
