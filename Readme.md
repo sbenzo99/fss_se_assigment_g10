@@ -140,7 +140,7 @@ Pearson correlation is sensitive to outliers, which is relevant given the extrem
 
 Spearman correlation evaluates the strength of a monotonic relationship.  
 Instead of using the raw values, it first ranks LoC and CC separately and then computes the Pearson correlation on these ranks.  
-The coefficient again ranges between minus one and plus one with the same interpretation, but it is more robust to outliers.
+The coefficient again ranges between -1 and +1 with the same interpretation, but it is more robust to outliers.
 
 In our case the Spearman correlation between LoC and CC is approximately 0.95, which indicates a very strong positive monotonic relationship.  
 As LoC increases, CC almost always increases as well, even if the exact relationship is not perfectly linear.
@@ -248,14 +248,14 @@ Below we summarise how AI was used.
 
 We used AI to clarify how to
 
-- create and activate a Python three point twelve virtual environment  
+- create and activate a Python 3.12 virtual environment  
 - generate a `requirements.txt` file from the installed packages  
 - check installed package versions  
 - update the local clone of the `transformers` repository to the required release tag  
 
 Example prompts
 
-- How do I create and activate a Python three point twelve virtual environment and export a requirements file  
+- How do I create and activate a Python 3.12 virtual environment and export a requirements file  
 - How can I checkout a specific release tag in a local clone of Hugging Face Transformers  
 
 ### Understanding APIs and complexity metrics
@@ -323,8 +323,8 @@ For example, we requested help on
 - how to propagate metrics from file paths to directory prefixes  
 - how to centre nodes vertically within each depth in matplotlib  
 - how to scale marker sizes and configure a custom legend that explains the mapping from size to LoC  
-- how to enlarge and reposition the legend s 
-- how to ensure that nodes at the same depth are sorted alphabetically  
+- how to enlarge and reposition the legends 
+- how to ensure that nodes at the same dept are sorted alphabetically  
 
 Example prompts
 
