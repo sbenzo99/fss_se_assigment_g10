@@ -333,3 +333,54 @@ Example prompts
 - How do I centre node positions and create a custom legend in matplotlib  
 
 All high level design decisions, including the choice of depth limit, the use of average values and the final form of the plot in `complexitytree.png`, were completely defined and validated by us.
+
+
+
+
+## 3.1
+
+To compute logical coupling, we implemented a function that analyzes the Git history and counts how often pairs of files are modified together in the same commit. The function was adjusted for the second subtask and the include_test boolean is to control the flow of logic for this task. It works by incrementing a coupling counter for each co-change and by returning the top 10 most frequently co-changed files.
+
+![7](3_1.png)
+
+
+One strongly coupled pair is configuration_auto.py and modeling_auto.py, which are changed together in the same commit quite often. This makes sense because the first file defines how model configurations are mapped, while the second defines how the corresponding model classes are instantiated. Meaning, whenever a new model is added or an existing mapping is changed, both files need to be updates, so their high coupling score reflects a normal and intentional design choice.
+
+
+## 3.2 
+
+By using the same custom function and specifying to include_test=True, we receive the following diagram. 
+![7](3_2.png)
+
+Regarding the potential code smell:
+
+The strong coupling between test files and their corresponding source files is totally normal, because tests are naturally updated whenever changes are made to the implementation. This type of coupling is normal and does not indicate a code smell and actually shows that the project’s tests are well maintained.
+
+
+## 3.3
+The three methods we propose are listed as follows:
+
+
+1. Naming/Path-Based Method
+This method uses the project’s folder structure and file naming to find the matching test file. It looks for test files with the most similar names (e.g., test_modeling_bert.py for modeling_bert) or in parallel directories under the tests/ folder.
+
+2. Logical Coupling Method
+This method builds on the solution we developed for the previous subtasks, by mining the git history and extracting files that have been changed together the most in the same commits as the target source file.
+The test files that frequently co-change with the source file are very likely to be the corresponding test files for it.
+
+
+3. Import Dependency Method
+This method analyzes which test files import the target source file or its classes and functions.
+The test file that directly imports or uses the module is considered the most closely related.
+
+
+
+## 3.4 
+For this task, we have decided to implement the path-based method and the Logical coupling method. 
+
+The path based method assums that the test files are located in teh tests directory with all the names prefixed with a tests_ prefix and while following the same subdirectory structure as the actual source code.
+
+The logical coupling method follows the approach we have used in subtask 2. By keeping track of how many times a pair of files was changed together, it selects the test file with the highest coupling frequency to the target source file.
+
+
+Both methods locate the correct test file path 'tests/generation/test_utils.py' for the source file src/transformers/generation/utils.py, proving that such simple methods are capable of test file discovery in well structured repositories.
