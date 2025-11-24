@@ -389,3 +389,15 @@ The logical coupling method follows the approach we have used in subtask 2. By k
 
 
 Both methods locate the correct test file path 'tests/generation/test_utils.py' for the source file src/transformers/generation/utils.py, proving that such simple methods are capable of test file discovery in well structured repositories.
+
+
+#### Usage of AI for task 3
+
+For task 3 similarily to the previous tasks we have used generative ai primarily as a sparring partner, to discuss ideas and to validate them. All the source code is written by us. 
+
+Example Prompts we have used:
+- When people are performing analysis of co-commits, is it assumed to not include the __init__.py file?  
+- Please explain the concept of logical coupling giving examples, what is it used for?
+- What does this error mean? 
+- should i use a defaultdictionary or a regular dictionary in my function? why?
+- etc.
