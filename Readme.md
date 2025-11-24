@@ -1,4 +1,4 @@
-##1.1 Defect Analysis(Task 1)
+## 1.1 Defect Analysis(Task 1)
 
 We use Git commands to extract the commits messages since 2023-01-01 in the HuggingFace transformers repository. We redirect the output in a commits.txt file for visual inspection and for data analysis later on.
 
@@ -8,9 +8,14 @@ We now move on to plotting the total number of defects per month, to do so we fi
 
 The plot shows a sharp drop of bug-related commits in October 2025. Notice that before dropping sharply, it reaches the heighest number of defects per month. We can clearly see that between February and September, there is high concentration of fixes, almost 60% more of the amount of fixes up to that point in time. On October 3rd, the version v4.57.0 was released, and this could explain both the high amount of fixes before that, and the consequent sharp drop.
 
+![aa](defects.png)
+
 We then found the two files with the most defects: modeling_utils.py and trainer.py.
 For modeling_utils.py the number of defects aligns with the general trend (most defects from February 2025 to September 2025) but the peak is reached in February. Looking through the commits, we noticed the addition of a new model, Qwen2.5 vl on January 23rd. Our hypothesis is that the introduction of this new model has increased complexity and compatibility issues, specifically with the modeling_utils.py, which is a parent class to all models. A similar event could have sparked the rise in bugs in the trainer.py file, as on April 23rd, a commit "Add FocalNet" appears. FocalNet is another visual model, that likely required multiple adjustments in the training loop.
 
+![bb](defects_modelling_utils.png)
+
+![cc](defects_trainer.png)
 
 Lastly, we explain the limitiations of this method: 
 
